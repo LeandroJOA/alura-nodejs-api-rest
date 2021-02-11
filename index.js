@@ -1,11 +1,17 @@
-// Importa o conteudo de "Express"
-const express = require('express')
+// Importa o conteudo da config "customExmpress"
+const customExpress = require('./config/customExpress')
+const connection = require('./database/connection')
 
-// Inicialização
-const app = express()
+connection.connect(error => {
+    if (error) {
+        console.log(error)
+    } else {
+        console.log('Conexão com o banco de dados realizada com sucesso!');
 
-// Sobe a aplicação na porta 3000, e envia a mensagem abaixo no console
-app.listen(3000, () => console.log('Servidor rodando na porta 3000'))
+        // Executa a função da customExpress, e armazena o retorno em app
+        const app = customExpress()
 
-// Rota GET (localhost:3000/atendimentos), retornando com resultado a mensagem abaixo 
-app.get('/atendimentos', (req, res) => res.send('Você está na rota de atendimentos!'))
+        // Sobe a aplicação na porta 3000, e envia a mensagem abaixo no console
+        app.listen(3000, () => console.log('Servidor rodando na porta 3000'))
+    }
+})
