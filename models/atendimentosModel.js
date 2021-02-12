@@ -4,7 +4,7 @@ const connection = require('../database/connection')
 
 // Classe para inserção de dados em atendimentos
 class AtendimentosModel {
-    save(atendimento) {
+    save(atendimento, res) {
         // Utilizando o moment para gerar uma nova data com os dados atuais
         const creationDate = moment().format('YYYY-MM-DD HH:MM:SS')
         // Utilizando o moment para formatar a data recebida, indicando o formato que é enviado
@@ -18,9 +18,9 @@ class AtendimentosModel {
         // Realizando um query, inserindo todo o conteudo do objeto "atendimentoDated"
         connection.query(sql, atendimentoDated, (error, results) => {
             if (error) {
-                console.log(error)
+                res.status(400).json(error)
             } else {
-                console.log(results)
+                res.status(201).json(results)
             }
         })
     }

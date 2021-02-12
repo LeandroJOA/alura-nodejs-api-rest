@@ -12,9 +12,6 @@ module.exports = app => {
         const atendimento = req.body
 
         // Chamando o metodo "save" e enviando os dados recebidos
-        atendimentosModel.save(atendimento)
-
-        // Mensagem de resposta
-        res.send('Você está na rota de atendimentos e está realizando um POST')
+        atendimentosModel.save(atendimento, res)
     })
 }
