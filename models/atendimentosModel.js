@@ -16,6 +16,9 @@ class AtendimentosModel {
         // Retorna true se o campo "client" possui mais de 1 caractere
         const clientValidator = atendimento.client.length > 1 
 
+        console.log(creationDate);
+        console.log(date);
+
         // Arrya com todas as validações e suas mensagens 
         const validators = [
             // Campo date
@@ -53,7 +56,7 @@ class AtendimentosModel {
                 if (error) {
                     res.status(400).json(error)
                 } else {
-                    res.status(201).json(results)
+                    res.status(201).json(atendimento)
                 }
             })
         }
@@ -114,7 +117,20 @@ class AtendimentosModel {
                 res.status(400).json(error)
             // Resposta    
             } else {
-                res.status(200).json(results)
+                res.status(200).json({...values, id})
+            }
+        })
+    }
+
+    // Delete
+    delete(id, res) {
+        const sql = 'DELETE FROM atendimentos WHERE id = ?'
+
+        connection.query(sql, id, (error, results) => {
+            if (error) {
+                res.status(400).json(error)
+            } else {
+                res.status(200).json({id})
             }
         })
     }

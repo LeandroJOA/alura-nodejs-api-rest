@@ -37,4 +37,13 @@ module.exports = app => {
         // Chama o metodo para atualizar um dado especifico
         atendimentosModel.update(id, values, res)
     })
+
+   // Rota DELETE (localhost:3000/atendimentos/{id}) 
+    app.delete('/atendimentos/:id', (req, res) => {
+        // Converte para inteiro o id recebido
+        const id = parseInt(req.params.id)
+
+        // Chama o metodo da model para deletar um atendimento especifico     
+        atendimentosModel.delete(id, res)
+    })
 }
