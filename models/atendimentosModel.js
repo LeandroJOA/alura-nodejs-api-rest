@@ -96,6 +96,28 @@ class AtendimentosModel {
         })
     }
 
+    // PATCH
+    update(id, values, res) {
+        // Verificando se foi enviado algum valor date
+        if (values.date) {
+            // Utilizando o moment para formatar a data recebida, indicando o formato que é enviado
+            values.date = moment(values.date, 'DD/MM/YYYY').format('YYYY-MM-DD HH:MM:SS')
+        }
+
+        // Query SQL
+        const sql = 'UPDATE atendimentos SET ? WHERE id = ?'
+
+        // Executando a query
+        connection.query(sql, [values, id], (error, results) => {
+            // Tratamento de erro
+            if (error) {
+                res.status(400).json(error)
+            // Resposta    
+            } else {
+                res.status(200).json(results)
+            }
+        })
+    }
 }
 
 // Exportando a classe "AtendimentosModel" já instanciada

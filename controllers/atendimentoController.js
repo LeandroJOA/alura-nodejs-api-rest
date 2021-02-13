@@ -26,4 +26,15 @@ module.exports = app => {
         // Chamando o metodo "save" e enviando os dados recebidos
         atendimentosModel.save(atendimento, res)
     })
+
+    // Rota PATCH (localhost:3000/atendimentos/{id})
+    app.patch('/atendimentos/:id', (req, res) => {
+        // Converte para inteiro o id recebido
+        const id = parseInt(req.params.id)
+        // Captura o body enviado pela requisição
+        const values = req.body
+
+        // Chama o metodo para atualizar um dado especifico
+        atendimentosModel.update(id, values, res)
+    })
 }
