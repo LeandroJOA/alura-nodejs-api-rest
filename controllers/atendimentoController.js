@@ -3,8 +3,20 @@ const atendimentosModel = require('../models/atendimentosModel')
 // Exporta estas rotas, para que sejam visiveis em todo o codigo
 module.exports = app => {
 
-    // Rota GET (localhost:3000/atendimentos), retornando com resultado a mensagem abaixo 
-    app.get('/atendimentos', (req, res) => res.send('Você está na rota de atendimentos!'))
+    // Rota GET (localhost:3000/atendimentos)
+    app.get('/atendimentos', (req, res) => {
+        // Chamada do metodo da model para listar todos os dados
+        atendimentosModel.findAll(res)
+    })
+
+    // Rota GET (localhost:3000/{id})
+    app.get('/atendimentos/:id', (req, res) => {
+        // Convertendo o id recebido para inteiro
+        const id = parseInt(req.params.id)
+
+        // Chamando o metodo da model para listar um unico dado
+        atendimentosModel.findById(id, res)
+    })
 
     // Rota POST (localhost:3000/atendimentos)
     app.post('/atendimentos', (req, res) => { 

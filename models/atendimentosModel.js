@@ -2,8 +2,9 @@ const moment = require('moment')
 
 const connection = require('../database/connection')
 
-// Classe para inserção de dados em atendimentos
+// Classe para manipulação de dados
 class AtendimentosModel {
+    // POST
     save(atendimento, res) {
         // Utilizando o moment para gerar uma nova data com os dados atuais
         const creationDate = moment().format('YYYY-MM-DD HH:MM:SS')
@@ -57,6 +58,44 @@ class AtendimentosModel {
             })
         }
     }
+
+    // GET
+    findAll(res) {
+        // Query SQL
+        const sql = 'SELECT * FROM atendimentos'
+
+        // Executando a query sql
+        connection.query(sql, (error, results) => {
+            // Tratamento de error
+            if (error) {
+                res.status(500).json(error)
+            // Retorno    
+            } else {
+                res.status(200).json(results)
+            }
+        })
+    }
+
+    // GET
+    findById(id, res) {
+        // Query SQL
+        const sql = `SELECT * FROM atendimentos WHERE ID = ${id}`
+
+        // Executando a query
+        connection.query(sql, (error, results) => {
+            // Recebendo a primeira posição de "results"
+            const atendimento = results[0]
+
+            //Tratamento de erros
+            if (error) {
+                res.status(400).json(error)
+            // Retorno     
+            } else {
+                res.status(200).json(atendimento)
+            }
+        })
+    }
+
 }
 
 // Exportando a classe "AtendimentosModel" já instanciada
