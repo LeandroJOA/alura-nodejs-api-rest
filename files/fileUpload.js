@@ -13,10 +13,10 @@ module.exports = (path, filename, callbackCreatedImage) => {
     
     // Verificando se a extensão da imagem recebida esta dentro do array de tipos validos (-1 caso não)
     // substring - Ignora a primeira posição de ext (no caso o ".")
-    const extIsValid = validExt.indexOf(ext.substring(1))
+    const extIsValid = validExt.indexOf(ext.substring(1)) !== -1
 
     // Verifica se o tipo é valido
-    if (extIsValid !== -1) {
+    if (extIsValid) {
         // Caminho onde a imagem a irá ser salva
         const newPath = `./assets/savedImages/${filename}${ext}`
 
@@ -25,9 +25,11 @@ module.exports = (path, filename, callbackCreatedImage) => {
             // Em seguida, criando uma Stream de escrita deste arquivo
             .pipe(fs.createWriteStream(newPath))
             // Ao finalizar, é executado uma função de callback
-            .on('finish', () => callbackCreatedImage(newPath))
+            .on('finish', () => callbackCreatedImage(false, newPath))
     } else {
+        const error = 'Error! Tipo invalido'
         console.log("Error! Tipo invalido");
+        callbackCreatedImage(error)
     }
 }
 
