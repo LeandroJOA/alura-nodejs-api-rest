@@ -1,4 +1,5 @@
 const moment = require('moment')
+const axios = require('axios')
 
 const connection = require('../database/connection')
 
@@ -85,15 +86,22 @@ class AtendimentosModel {
         const sql = `SELECT * FROM atendimentos WHERE ID = ${id}`
 
         // Executando a query
-        connection.query(sql, (error, results) => {
+        connection.query(sql, async (error, results) => {
             // Recebendo a primeira posição de "results"
             const atendimento = results[0]
+
+            const cpf = atendimento.client
 
             //Tratamento de erros
             if (error) {
                 res.status(400).json(error)
             // Retorno     
             } else {
+                // Recebe os dados do cliente referente ao seu CPF
+                const { data } = await axios.get(`http://localhost:8082/${cpf}`)
+                // Inclui esses dados ao atendimento
+                atendimento.client = data
+
                 res.status(200).json(atendimento)
             }
         })
