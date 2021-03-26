@@ -12,7 +12,7 @@ class Tables {
     // Cria tabela Atendimentos
     createAtendimentos() {
         // Comando SQL
-        const sql = 'CREATE TABLE IF NOT EXISTS atendimentos (id int NOT NULL AUTO_INCREMENT, client varchar(50) NOT NULL, pet varchar(20), service varchar(20) NOT NULL, date datetime NOT NULL, creationDate datetime NOT NULL, status varchar(20) NOT NULL, observation text, PRIMARY KEY(id))'
+        const sql = 'CREATE TABLE IF NOT EXISTS atendimentos (id int NOT NULL AUTO_INCREMENT, client varchar(11) NOT NULL, pet varchar(20), service varchar(20) NOT NULL, date datetime NOT NULL, creationDate datetime NOT NULL, status varchar(20) NOT NULL, observation text, PRIMARY KEY(id))'
 
         // Realizando uma query com o comando SQL definido anteriormente
         this.connection.query(sql, error => {
