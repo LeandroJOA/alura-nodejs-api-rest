@@ -13,3 +13,5 @@ const executeQuery = (sql, param = '') => {
         })
     })
 }
+
+module.exports = executeQuery

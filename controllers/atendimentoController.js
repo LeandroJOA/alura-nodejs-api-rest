@@ -23,8 +23,11 @@ module.exports = app => {
         // Armazenando o body enviado da requisição realizada
         const atendimento = req.body
 
-        // Chamando o metodo "save" e enviando os dados recebidos
-        atendimentosModel.save(atendimento, res)
+        atendimentosModel.save(atendimento)
+            // Caso o metodo save seja bem sucedido, retorna como response o codigo 201 e o atendimento que foi cadastrado
+            .then(registeredAtendimento => res.status(201).json(registeredAtendimento))
+            // Caso contrario retorna o status 400, junto do objeto com o erro
+            .catch(error => res.status(400).json(error))
     })
 
     // Rota PATCH (localhost:3000/atendimentos/{id})
