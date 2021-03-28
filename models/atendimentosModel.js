@@ -7,39 +7,54 @@ const repository = require('../repository/atendimentoRepository')
 // Classe para manipulação de dados
 class AtendimentosModel {
     // POST
-    save(atendimento) {
-        // Utilizando o moment para gerar uma nova data com os dados atuais
-        const creationDate = moment().format('YYYY-MM-DD HH:MM:SS')
-        // Utilizando o moment para formatar a data recebida, indicando o formato que é enviado
-        const date = moment(atendimento.date, 'DD/MM/YYYY').format('YYYY-MM-DD HH:MM:SS')
-        
-        // Retorna true se a data recebida é igual ou após a data de criação
-        const dateValidator = moment(date).isSameOrAfter(creationDate)
-        // Retorna true se o campo "client" possui mais de 1 caractere
-        const clientValidator = atendimento.client.length > 1 
 
-        console.log(creationDate);
-        console.log(date);
-        console.log(atendimento);
+    constructor() {
+
+        // Retorna true se a data recebida é igual ou após a data de criação
+        this.dateValidator = ({ date, creationDate }) => moment(date).isSameOrAfter(creationDate)
+        // Retorna true se o campo "client" possui mais de 1 caractere
+        this.clientValidator = (length) => length > 1
+
+        this.validator = params => this.validators.filter(field => {
+            const { name } = field
+            const param = params[name]
+
+            return !field.valid(param)
+        })
 
         // Arrya com todas as validações e suas mensagens 
-        const validators = [
+        this.validators = [
             // Campo date
             {
                 nome: 'date',
-                valid: dateValidator,
+                valid: this.dateValidator,
                 message: 'ERROR! Data deve ser maior ou igual a data atual!'
             },
             // Campo client
             {
                 nome: 'client',
-                valid: clientValidator,
+                valid: this.clientValidator,
                 message: 'ERROR! Nome do cliente deve ser maior que 1 caracterer!'
             }
         ]
+        
+    }
+     
+    save(atendimento) {
+        // Utilizando o moment para gerar uma nova data com os dados atuais
+        const creationDate = moment().format('YYYY-MM-DD HH:MM:SS')
+        // Utilizando o moment para formatar a data recebida, indicando o formato que é enviado
+        const date = moment(atendimento.date, 'DD/MM/YYYY').format('YYYY-MM-DD HH:MM:SS')
+
+        const params = {
+            date: { date, creationDate },
+            client: { length: atendimento.client.length }
+        }
+
+        console.log(params);
 
         // Armazena o objeto em "errors", caso alguma validação possua "false" como "valid"
-        const errors = validators.filter(field => !field.valid)
+        const errors = this.validator(params)
         // Verifica quantos erros existem (retorna false caso não exista nenhum)
         const hasErrors = errors.length
 
